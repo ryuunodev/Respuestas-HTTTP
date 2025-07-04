@@ -1,0 +1,6 @@
+@Respuestas_HTTTP_HostAddress = http://localhost:5258
+
+GET {{Respuestas_HTTTP_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
