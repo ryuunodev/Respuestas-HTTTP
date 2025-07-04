@@ -14,6 +14,7 @@ namespace Respuestas_HTTTP.Controllers {
         public PeopleController([FromKeyedServices("peopleService")]IPeopleService iPeopleService) 
         {
             //_peopleService = new PeopleServiceImpl(); quitamos la implementacion al agragarlo ya en Program.cs
+
             _peopleService = iPeopleService;
         }
 
