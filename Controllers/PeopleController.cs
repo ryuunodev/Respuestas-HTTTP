@@ -1,11 +1,22 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Respuestas_HTTTP.Repository;
+using Respuestas_HTTTP.Services;
 
 namespace Respuestas_HTTTP.Controllers {
     [Route("api/[controller]")]
     [ApiController]
     public class PeopleController : ControllerBase {
+
+        private IPeopleService _peopleService;
+
+
+        public PeopleController([FromKeyedServices("peopleService")]IPeopleService iPeopleService) 
+        {
+            //_peopleService = new PeopleServiceImpl(); quitamos la implementacion al agragarlo ya en Program.cs
+
+            _peopleService = iPeopleService;
+        }
 
 
         [HttpGet]
@@ -56,7 +67,7 @@ namespace Respuestas_HTTTP.Controllers {
          */
         [HttpPost]
         public IActionResult Add(People people) {
-            if (string.IsNullOrEmpty(people.Name))
+            if (!_peopleService.Validate(people))
                 return BadRequest("Error: El nombre no debe ser vacio o nulo");
 
 
@@ -65,5 +76,16 @@ namespace Respuestas_HTTTP.Controllers {
             //return NoContent();
             return CreatedAtAction(nameof(GetById), new { id = people.Id }, people);
         }
+
+        /*
+         * Principios SOLID
+         * 
+         *  S ::  Single Responsability Principle
+         *  O ::  Open-Closed Principle
+         *  L ::  Liskov Subtitution Principle
+         *  I ::  Interface Segregation Principle
+         *  D ::  Dependency Inversion Principle
+         * 
+         */
     }
 }
